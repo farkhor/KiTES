@@ -28,10 +28,6 @@ bool pre_processing_function_sssp(
 
 int main( int argc, char **argv )
 {
-  if( argc < 2 ) {
-    std::cout << "Please supply the input edgelist name as the first argument of the executable.\n";
-    return( EXIT_FAILURE );
-  }
 
 	try{
 
@@ -52,7 +48,7 @@ int main( int argc, char **argv )
 
       // Create a graph at the host side.
       kites::graph_csr<vT, eT> hostGrph(
-          argv[ 1 ],   // Graph edgelist. This particular graph is from SNAP dataset.
+          "Sample-Graph-Wiki-Vote.txt",   // Graph edgelist. This graph is downloaded from SNAP dataset.
           pre_processing_function_sssp<vT, eT>,         // Pre-processing function.
           1,                                            // Vertex per graph for the CSC rep.
           kites::input_graph_form::edge_list_s_d        // Input graph form (here source to destination).
