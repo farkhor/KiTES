@@ -50,7 +50,7 @@ int main( int argc, char **argv )
       kites::graph_csr<vT, eT> hostGrph(
           "Sample-Graph-Wiki-Vote.txt",   // Graph edgelist. This graph is downloaded from SNAP dataset.
           pre_processing_function_sssp<vT, eT>,         // Pre-processing function.
-          1,                                            // Vertex per graph for the CSC rep.
+          1,                                            // Vertex per group ratio for the CSC rep.
           kites::input_graph_form::edge_list_s_d        // Input graph form (here source to destination).
           );
       // Determine which GPU, or a subset of available GPUs process the graph.
@@ -60,7 +60,7 @@ int main( int argc, char **argv )
       // Move created CSR graph to the device side.
       auto devGrph = kites::make_graph_csr_for_device( hostGrph, mydev );
       // Process the graph.
-      kites::process< kites::launch::async >(
+      kites::process< kites::launch::sync >(
           devGrph,
           mydev,
           initF, nbrCompF, redF, updF );
