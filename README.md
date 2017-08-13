@@ -33,13 +33,18 @@ kites::graph_csr<vT, eT> hostGrph(
   );
 ```
 
-We also create an `nv_gpu` object which specifies a particular GPU with an specific index in the system. This GPU object will be used by the main computation routine to process the graph.
+We also have to create an `nv_gpu` object which specifies a particular GPU with an specific index in the system. This GPU object will be used by the main computation routine to process the graph.
 ```
 kites::nv_gpu mydev( 0 );
 ```
 Here we specified the GPU with index `0`. We can also specify a combination of the available GPUs using `kites::nv_gpu` object like below:
 ```
 kites::nv_gpus mydevs{ 0, 1, 2 };
+```
+
+Then, the graph has to be transferred to the GPU memory:
+```
+auto devGrph = kites::make_graph_csr_for_device( hostGrph, mydev );
 ```
 
 Finally, the processing function is called by specifying the graph object, device object, and the GPU device functions. This essentially means that the specified graph will be processed by the set of GPUs specified as the compute device. Behind the scene, the library transfers the graph data into GPUs' DRAM and organizes the graph processing procedure while utilizing specified device functions iteratively.
